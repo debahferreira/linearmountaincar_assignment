@@ -58,7 +58,14 @@ class FeatureExtractor(ABC):
         This helper clamps out-of-bounds values to the [0,1] interval which
         is useful for grid-based or RBF centers defined in normalized space.
         """
-        raise NotImplementedError("Please implement normalize_state as part of the assignment.")
+        min_interval = 0
+        max_interval = 1
+        #calculo de normalização
+        state_norm = (state - self.env.observation_space.low)/(self.env.observation_space.high - self.env.observation_space.low)
+        #garantir que não vai passar nem do mínimo, nem do máximo
+        state_norm = np.clip(state_norm, min_interval, max_interval)
+
+        return state_norm
 
 
 class RBFFeatureExtractor(FeatureExtractor):
