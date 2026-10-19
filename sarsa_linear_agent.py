@@ -47,7 +47,7 @@ class LinearSarsaAgent:
 
         # Students should initialize weights to zeros with shape
         # (n_actions, feature_extractor.n_features)
-        self.weights = [] #TODO: Initialize properly
+        self.weights = np.zeros((self.n_actions, self.feature_extractor.n_features)) #FEITO
 
         # Track training statistics
         self.episode_rewards = []
@@ -58,6 +58,7 @@ class LinearSarsaAgent:
 
         compute the dot product between weights and features.
         """
+        
         raise NotImplementedError()
 
     def V(self, state: np.ndarray) -> float:
