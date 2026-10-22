@@ -125,7 +125,44 @@ class LinearSarsaAgent:
 
         Returns two lists: rewards per step and rewards per episode.
         """
-        raise NotImplementedError("Implement training loop in train()")
+        rewards_per_step = []
+        rewards_per_episode = []
+
+        current_episode_reward = 0.0
+        current_episode_length = 0
+
+        # Inicia o primeiro episódio
+        state, _ = self.env.reset()
+        action = self.act(state)
+
+        for step in range(total_steps):
+            next_state, reward, terminated, truncated, _ = self.env.step(action)
+            done = bool(terminated or truncated)
+
+            next_action = self.act(next_state)
+
+            self.updateQ(state, action, reward, next_state, next_action, done)
+
+            rewards_per_step.append(reward)
+            current_episode_reward += reward
+            current_episode_length += 1
+
+            if done:
+                rewards_per_episode.append(current_episode_reward)
+                self.episode_rewards.append(current_episode_reward)
+                self.episode_lengths.append(current_episode_length)
+
+                self.decay_epsilon()
+
+                current_episode_reward = 0.0
+                current_episode_length = 0
+                state, _ = self.env.reset()
+                action = self.act(state)
+            else:
+                state = next_state
+                action = next_action
+
+        return rewards_per_step, rewards_per_episode
 
     def save_model(self, filepath: str) -> None:
         """Save weights and feature extractor config.
