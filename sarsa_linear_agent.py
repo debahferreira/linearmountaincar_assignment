@@ -170,6 +170,7 @@ class LinearSarsaAgent:
         Students: persist `self.weights` and a small dict describing the
         feature extractor parameters (e.g., type, n_features, n_centers, sigma).
         """
+
         model_data = {
             'weights': self.weights,
             'epsilon': self.epsilon,
@@ -178,8 +179,11 @@ class LinearSarsaAgent:
             'feature_extractor_config': {
                 'type': type(self.feature_extractor).__name__,
                 'n_features': self.feature_extractor.n_features,
+                'n_centers': getattr(self.feature_extractor, 'n_centers', None),
+                'sigma': getattr(self.feature_extractor, 'sigma', None),
             },
         }
+
         with open(filepath, 'wb') as f:
             pickle.dump(model_data, f)
 
@@ -188,7 +192,9 @@ class LinearSarsaAgent:
         with open(filepath, 'rb') as f:
             model_data = pickle.load(f)
 
-        self.weights = model_data['weights']
+        self.weights = np.array(model_data['weights'])
         self.epsilon = model_data.get('epsilon', self.epsilon)
+        self.learning_rate = model_data.get('learning_rate', self.learning_rate)
+        self.discount_factor = model_data.get('discount_factor', self.discount_factor)
         self.episode_rewards = model_data.get('episode_rewards', [])
         self.episode_lengths = model_data.get('episode_lengths', [])
