@@ -94,7 +94,20 @@ class LinearSarsaAgent:
     ) -> None:
         """SARSA weight update 
         """
-        raise NotImplementedError("Implement SARSA update rule in updateQ()")
+        # 1. alvo TD
+        if done:
+            target = reward
+        else:
+            target = reward + self.discount_factor * self.Q(next_state, next_action)
+
+        # 2. erro TD
+        td_error = target - self.Q(state, action)
+
+        # 3. extrair as características do estado atual
+        features = self.feature_extractor.extract_features(state)
+
+        # 4. atualizar os pesos da ação
+        self.weights[action] += self.learning_rate * td_error * features
 
     def decay_epsilon(self) -> None:
         """Decay epsilon after each episode (simple multiplicative decay).
