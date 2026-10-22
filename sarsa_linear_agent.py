@@ -64,7 +64,11 @@ class LinearSarsaAgent:
 
     def V(self, state: np.ndarray) -> float:
         """Return the maximum Q over actions for a state."""
-        raise NotImplementedError()
+        q_values = []
+        for action in range(self.n_actions):
+            q_values.append(self.Q(state, action))
+        return max(q_values)
+
 
     def act(self, state: np.ndarray) -> int:
         """Epsilon-greedy action selection (student to implement).
