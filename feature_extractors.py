@@ -129,4 +129,6 @@ class RBFFeatureExtractor(FeatureExtractor):
 
         Returns a 1D numpy array of length `self.n_features`.
         """
-        raise NotImplementedError("Please implement extract_features as part of the assignment.")
+        norm_state = self.normalize_state(state)
+        dist_sq = np.sum((norm_state - self.centers) ** 2, axis=1)
+        return np.exp(-dist_sq / (2.0 * (self.sigma ** 2)))
