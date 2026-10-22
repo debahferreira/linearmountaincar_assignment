@@ -113,7 +113,7 @@ class LinearSarsaAgent:
         """Decay epsilon after each episode (simple multiplicative decay).
         Don't decay below self.epsilon_min
         """
-        raise NotImplementedError("Implement epsilon decay in decay_epsilon()")
+        self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
 
     def train(self, total_steps: int) -> Tuple[List[float], List[float]]:
         """Train the agent for a fixed number of environment steps.
