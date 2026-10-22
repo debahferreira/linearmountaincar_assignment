@@ -69,14 +69,19 @@ class LinearSarsaAgent:
             q_values.append(self.Q(state, action))
         return max(q_values)
 
-
     def act(self, state: np.ndarray) -> int:
         """Epsilon-greedy action selection (student to implement).
 
         HINT: With probability epsilon choose random action, otherwise argmax Q.
         """
         # Student implementation required
-        raise NotImplementedError("Implement epsilon-greedy policy in act()")
+        if np.random.random() < self.epsilon:
+            action = self.env.action_space.sample()
+        else:
+            q_values = [self.Q(state, a) for a in range(self.n_actions)]
+            action = np.argmax(q_values)
+
+        return int(action)
 
     def updateQ(
         self,
