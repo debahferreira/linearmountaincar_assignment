@@ -17,6 +17,7 @@ from abc import ABC, abstractmethod
 from typing import Tuple
 import numpy as np
 import gymnasium as gym
+import math
 
 
 class FeatureExtractor(ABC):
@@ -106,7 +107,22 @@ class RBFFeatureExtractor(FeatureExtractor):
         within the normalized [0,1] coordinates. The first center must be at (0,0) and the last at (1,1).
 
         """
-        raise NotImplementedError("Please implement _create_rbf_centers as part of the assignment.")
+
+        n_per_dim = int(math.ceil(math.sqrt(self.n_centers)))
+        x_points = np.linspace(0.0, 1.0, n_per_dim)
+        y_points = np.linspace(0.0, 1.0, n_per_dim)
+
+        centers_list = []
+        for x in x_points:
+            for y in y_points:
+                centers_list.append([x, y])
+
+        if len(centers_list) > self.n_centers:
+            centers_list = centers_list[: self.n_centers - 1] + [centers_list[-1]]
+        else:
+            centers_list = centers_list[:self.n_centers]
+
+        self.centers = np.array(centers_list)
 
     def extract_features(self, state: np.ndarray) -> np.ndarray:
         """(Student) Compute RBF feature activations for a state.
