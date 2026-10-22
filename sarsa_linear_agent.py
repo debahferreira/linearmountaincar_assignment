@@ -59,7 +59,8 @@ class LinearSarsaAgent:
         compute the dot product between weights and features.
         """
         
-        raise NotImplementedError()
+        features = self.feature_extractor.extract_features(state)
+        return float(np.dot(self.weights[action], features))
 
     def V(self, state: np.ndarray) -> float:
         """Return the maximum Q over actions for a state."""
