@@ -8,7 +8,7 @@ O objetivo deste experimento foi avaliar a convergência, a estabilidade e a vel
 * **Ambiente:** `MountainCar-v0`
 * **Critério de Parada:** O treinamento é interrompido com sucesso assim que o agente alcança **10 episódios bem-sucedidos** (atingindo o topo da montanha).
 * **Teto Máximo de Passos (`MAX_STEPS`):** Fixado em **50.000 passos**. Caso o agente esgote esse limite sem atingir a meta, a execução é encerrada e rotulada como falha de convergência.
-* **Repetições:** Cada configuração foi executada ao longo de **10 sementes aleatórias (*seeds*)** independentes para garantir significância estatística e mitigar o ruído estocástico do ambiente.
+* **Repetições:** Cada configuração foi executada ao longo de 10 repetições independentes para garantir significância estatística e mitigar o ruído estocástico do ambiente.
 
 ### 1.2 Espaço de Hiperparâmetros
 Durante a fase exploratória, avaliou-se um grid de hiperparâmetros combinando diferentes taxas de aprendizagem ($\alpha$) e fatores de decaimento de exploração ($\epsilon\text{-decay}$):
