@@ -53,7 +53,7 @@ def main():
     TARGET_SUCC = 10
 
     results = []
-    learning_rates = [0.005, 0.01, 0.05]
+    learning_rates = [0.01, 0.05, 0.1]
     epsilon_decays = [0.95, 0.99, 0.995]
 
     env = gym.make("MountainCar-v0")
