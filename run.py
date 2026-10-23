@@ -1,7 +1,7 @@
 from sarsa_linear_agent import LinearSarsaAgent
-from feature_extractors import FeatureExtractor, RBFFeatureExtractor
-import numpy as np
+from feature_extractors import RBFFeatureExtractor
 import gymnasium as gym
+import pandas as pd
 
 """
 Executar uma comparação de hiperparâmetros em 10 repetições de 50 mil steps cada, por configuração.
@@ -10,13 +10,6 @@ Registrar o número de passos até 10 sucessos para cada execução.
 
 Produzir boxplots comparando distribuições para as 5 configurações mais relevantes.
 """
-REPS = 10
-
-steps_to_target = []
-learning_rates = [0.005, 0.01, 0.05]
-epsilon_decays = [0.95, 0.99, 0.995]
-
-env = gym.make("MountainCar-v0")
 
 def run_experiment(env, alpha, decay, max_steps, target_successes):
 
@@ -53,3 +46,32 @@ def run_experiment(env, alpha, decay, max_steps, target_successes):
             action = next_action
         
     return total_steps
+
+def main():
+    REPS = 10
+    MAX_STEPS = 50000
+    TARGET_SUCC = 10
+
+    results = []
+    learning_rates = [0.005, 0.01, 0.05]
+    epsilon_decays = [0.95, 0.99, 0.995]
+
+    env = gym.make("MountainCar-v0")
+
+    for rep in range(REPS):
+        for alpha in learning_rates:
+            for decay in epsilon_decays:
+                total_steps = run_experiment(env, alpha, decay, MAX_STEPS, TARGET_SUCC)
+                results.append({
+                    "learning_rate": alpha,
+                    "epsilon_decay": decay,
+                    "total_steps": total_steps
+                })
+
+    df = pd.DataFrame(results)
+    df.to_csv("resultados.csv", index=False)
+
+    env.close()
+
+if __name__ == "__main__":
+    main()
