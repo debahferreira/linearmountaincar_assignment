@@ -208,6 +208,3 @@ __marimo__/
 
 #pickle
 *.pkl
-
-#plots
-*.png
